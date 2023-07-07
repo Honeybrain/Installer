@@ -46,6 +46,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Valentin Charbonnier - valentin.charbonnier@epitech.eu
 
-Project Link: [Honeybrain](https://github.com/Le-Pot-de-Miel/)
+Project Link: [Honeybrain](https://github.com/Honeybrain/)
 
 Feel free to reach out to us if you have any questions, or if you want to discuss further enhancements for the project. We look forward to your valuable contributions!
