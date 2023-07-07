@@ -84,7 +84,7 @@ def generate(config_file_path, username, password):
         shutil.copytree('../Honeypot/nginx', './build/honeypot/nginx', dirs_exist_ok=True)
         shutil.copytree('../Honeypot/shop', './build/honeypot/shop', dirs_exist_ok=True)
         shutil.copytree('../Honeypot/suricata', './build/honeypot/suricata', dirs_exist_ok=True)
-        shutil.copy('../Honeypot/fail2ban.env', './build/honeypot/fail2ban.env')
+        shutil.copy('../Honeypot/fail2ban/config/fail2ban.env', './build/honeypot/fail2ban.env')
 
         # Write the output to a file
         with open('build/docker-compose.yml', 'w') as f:
