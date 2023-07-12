@@ -133,7 +133,7 @@ class Page7(Frame):
             "dockerfile": dockerfile,
         }
 
-        if self.parent.data["nofakemachine"].get():
+        if self.parent.data["nofakemachine"].get() == False:
             config["dummy_pc"] = {
                 "num_services": int(self.parent.data["num_services"].get()),
                 "ip_addresses": [
@@ -142,18 +142,18 @@ class Page7(Frame):
                 ],
             }
 
-        if self.parent.data["noftp"].get():
+        if self.parent.data["noftp"].get() == False:
             config["ftp"] = {
                 "ip_address": self.parent.data["ip_address"].get(),
                 "port": self.parent.data["port"].get(),
             }
 
         # Créer le dossier 'build' s'il n'existe pas
-        if not os.path.exists("build"):
-            os.makedirs("build")
+        if not os.path.exists("../build"):
+            os.makedirs("../build")
 
         # Path de la configuration
-        config_file_path = "./build/config.json"
+        config_file_path = "../build/config.json"
 
         # Écrire les options de configuration dans un fichier
         with open(config_file_path, "w") as f:
