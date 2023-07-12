@@ -78,5 +78,8 @@ class MainWindow(Tk):
         # Set ucrrent Window
         self.current_window = self.windows.get(name)
 
+        if hasattr(self.current_window, "start"):
+            self.current_window.start()
+
         # Show the screen of the button pressed
         self.windows[name].place(x=0, y=0, width=862.0, height=519.0)

@@ -6,7 +6,7 @@ import threading
 from tkinter import Frame, Canvas, Button, PhotoImage, Text, messagebox
 from generator import generate
 
-from utils import is_dockerfile_path, is_valid_email, is_valid_ip_list, is_valid_port
+from utils import is_dockerfile_path
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -77,6 +77,7 @@ class Page7(Frame):
         self.button_1.pack()
         self.hide_button()
 
+    def start(self):
         # Rediriger la sortie standard vers le widget Text
         self.redirect_output(self.entry_1)
 
@@ -90,7 +91,7 @@ class Page7(Frame):
         if not is_dockerfile_path(dockerfile):
             messagebox.showerror("Erreur.", "Chemin du Dockerfile invalide.")
         else:
-            self.parent.change_page("page7")
+            self.parent.change_page("page8")
 
     def redirect_output(self, text_widget):
         class StdoutRedirector:

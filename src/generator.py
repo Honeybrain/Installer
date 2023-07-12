@@ -84,18 +84,23 @@ def generate(config_file_path, username, password):
         print("Copying files...")
 
         shutil.copytree(
-            "../Honeypot/fail2ban", "./build/honeypot/fail2ban", dirs_exist_ok=True
+            "../../Honeypot/fail2ban", "./build/honeypot/fail2ban", dirs_exist_ok=True
         )
-        shutil.copytree("../Honeypot/logs", "./build/honeypot/logs", dirs_exist_ok=True)
         shutil.copytree(
-            "../Honeypot/nginx", "./build/honeypot/nginx", dirs_exist_ok=True
+            "../../Honeypot/logs", "./build/honeypot/logs", dirs_exist_ok=True
         )
-        shutil.copytree("../Honeypot/shop", "./build/honeypot/shop", dirs_exist_ok=True)
         shutil.copytree(
-            "../Honeypot/suricata", "./build/honeypot/suricata", dirs_exist_ok=True
+            "../../Honeypot/nginx", "./build/honeypot/nginx", dirs_exist_ok=True
+        )
+        shutil.copytree(
+            "../../Honeypot/shop", "./build/honeypot/shop", dirs_exist_ok=True
+        )
+        shutil.copytree(
+            "../../Honeypot/suricata", "./build/honeypot/suricata", dirs_exist_ok=True
         )
         shutil.copy(
-            "../Honeypot/fail2ban/config/fail2ban.env", "./build/honeypot/fail2ban.env"
+            "../../Honeypot/fail2ban/config/fail2ban.env",
+            "./build/honeypot/fail2ban.env",
         )
 
         # Write the output to a file
