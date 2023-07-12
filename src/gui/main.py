@@ -10,6 +10,8 @@ from gui.pages.page3.gui import Page3
 from gui.pages.page4.gui import Page4
 from gui.pages.page5.gui import Page5
 from gui.pages.page6.gui import Page6
+from gui.pages.page7.gui import Page7
+
 
 class MainWindow(Tk):
     global user
@@ -58,6 +60,7 @@ class MainWindow(Tk):
             "page4": Page4(self),
             "page5": Page5(self),
             "page6": Page6(self),
+            "page7": Page7(self),
         }
 
         self.change_page("page1")
