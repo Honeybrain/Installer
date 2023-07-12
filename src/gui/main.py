@@ -8,6 +8,7 @@ from gui.pages.page1.gui import Page1
 from gui.pages.page2.gui import Page2
 from gui.pages.page3.gui import Page3
 from gui.pages.page4.gui import Page4
+from gui.pages.page5.gui import Page5
 
 class MainWindow(Tk):
     global user
@@ -29,6 +30,8 @@ class MainWindow(Tk):
             "noftp": BooleanVar(),
             "ip_address": StringVar(),
             "port": StringVar(),
+            "mail": StringVar(),
+            "password": StringVar(),
         }
 
         self.current_window = None
@@ -51,6 +54,7 @@ class MainWindow(Tk):
             "page2": Page2(self),
             "page3": Page3(self),
             "page4": Page4(self),
+            "page5": Page5(self),
         }
 
         self.change_page("page1")
