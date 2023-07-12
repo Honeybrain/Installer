@@ -76,8 +76,6 @@ def generate(config_file_path, username, password):
     
     try:
         print('Copying files...')
-        # Copy docker files
-        shutil.copytree('./modules', './build/modules', dirs_exist_ok=True)
 
         shutil.copytree('../Honeypot/fail2ban', './build/honeypot/fail2ban', dirs_exist_ok=True)
         shutil.copytree('../Honeypot/logs', './build/honeypot/logs', dirs_exist_ok=True)
