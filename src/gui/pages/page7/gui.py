@@ -85,13 +85,7 @@ class Page7(Frame):
         install_thread.start()
 
     def next_page(self):
-        dockerfile = self.page6_entry_1.get()
-        self.parent.data["dockerfile"].set(dockerfile)
-
-        if not is_dockerfile_path(dockerfile):
-            messagebox.showerror("Erreur.", "Chemin du Dockerfile invalide.")
-        else:
-            self.parent.change_page("page8")
+        self.parent.change_page("page8")
 
     def redirect_output(self, text_widget):
         class StdoutRedirector:
