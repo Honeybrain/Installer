@@ -7,7 +7,7 @@ from tkinter import StringVar, IntVar, BooleanVar, Tk, Canvas
 from gui.pages.page1.gui import Page1
 from gui.pages.page2.gui import Page2
 from gui.pages.page3.gui import Page3
-
+from gui.pages.page4.gui import Page4
 
 class MainWindow(Tk):
     global user
@@ -26,6 +26,9 @@ class MainWindow(Tk):
             "nofakemachine": BooleanVar(),
             "ip_addresses": StringVar(),
             "num_services": StringVar(),
+            "noftp": BooleanVar(),
+            "ip_address": StringVar(),
+            "port": StringVar(),
         }
 
         self.current_window = None
@@ -47,6 +50,7 @@ class MainWindow(Tk):
             "page1": Page1(self),
             "page2": Page2(self),
             "page3": Page3(self),
+            "page4": Page4(self),
         }
 
         self.change_page("page1")
