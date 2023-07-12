@@ -15,6 +15,7 @@ import re
 import netifaces
 
 from gui.pages.page1.gui import Page1
+from gui.pages.page2.gui import Page2
 
 
 class MainWindow(Tk):
@@ -45,6 +46,7 @@ class MainWindow(Tk):
         # Loop through windows and place them
         self.windows = {
             "page1": Page1(self),
+            "page2": Page2(self),
         }
 
         self.change_page("page1")

@@ -46,7 +46,7 @@ class Page1(Frame):
             image=self.button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("feur"),
+            command=lambda: self.parent.change_page("page2"),
             relief="flat",
         )
         button_1.place(x=556.9999999999999, y=401.0, width=180.0, height=55.0)
