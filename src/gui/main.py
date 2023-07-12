@@ -9,6 +9,7 @@ from gui.pages.page2.gui import Page2
 from gui.pages.page3.gui import Page3
 from gui.pages.page4.gui import Page4
 from gui.pages.page5.gui import Page5
+from gui.pages.page6.gui import Page6
 
 class MainWindow(Tk):
     global user
@@ -32,6 +33,7 @@ class MainWindow(Tk):
             "port": StringVar(),
             "mail": StringVar(),
             "password": StringVar(),
+            "dockerfile": StringVar(),
         }
 
         self.current_window = None
@@ -55,6 +57,7 @@ class MainWindow(Tk):
             "page3": Page3(self),
             "page4": Page4(self),
             "page5": Page5(self),
+            "page6": Page6(self),
         }
 
         self.change_page("page1")
