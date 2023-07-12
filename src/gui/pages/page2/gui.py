@@ -1,5 +1,7 @@
 from pathlib import Path
-from tkinter import Frame, Canvas, Button, PhotoImage, Entry
+from tkinter import Frame, Canvas, Button, PhotoImage, Entry, messagebox
+
+from utils import is_valid_cidr, is_valid_interface
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -20,8 +22,6 @@ class Page2(Frame):
 
         self.configure(bg="#FFFFFF")
 
-        global page2_entry_1
-        global page2_entry_2
         self.canvas = Canvas(
             self,
             bg = "#003061",
@@ -36,10 +36,11 @@ class Page2(Frame):
         self.button_image_1 = PhotoImage(
             file=relative_to_assets("button_1.png"))
         button_1 = Button(
+            self,
             image=self.button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("feur"),
+            command=lambda: self.next_page(),
             relief="flat"
         )
         button_1.place(
@@ -176,12 +177,13 @@ class Page2(Frame):
 
         self.entry_image_1 = PhotoImage(
             file=relative_to_assets("entry_1.png"))
-        entry_bg_1 = self.canvas.create_image(
+        self.entry_bg_1 = self.canvas.create_image(
             646.5,
             311.5,
             image=self.entry_image_1
         )
         self.page2_entry_1 = Entry(
+            self,
             bd=0,
             bg="#F1F5FF",
             fg="#000716",
@@ -206,12 +208,13 @@ class Page2(Frame):
 
         self.entry_image_2 = PhotoImage(
             file=relative_to_assets("entry_1.png"))
-        entry_bg_2 = self.canvas.create_image(
+        self.entry_bg_2 = self.canvas.create_image(
             646.5,
             189.5,
             image=self.entry_image_2
         )
         self.page2_entry_2 = Entry(
+            self,
             bd=0,
             bg="#F1F5FF",
             fg="#000716",
@@ -233,3 +236,16 @@ class Page2(Frame):
             fill="#FFFFFF",
             font=("Roboto Bold", 16 * -1)
         )
+
+    def next_page(self):
+        interface = self.page2_entry_2.get()
+        subnet = self.page2_entry_1.get()
+        self.parent.data["interface"].set(interface)
+        self.parent.data["subnet"].set(subnet)
+
+        if not is_valid_interface(interface):
+            messagebox.showerror("Erreur.", "Cette interface réseau n'existe pas. Tapez ifconfig pour trouver le nom de votre interface réseau (du paquet npm net-tools).")
+        elif not is_valid_cidr(subnet):
+            messagebox.showerror("Erreur.", "Ceci n'est pas une adresse IP.")
+        else:
+            self.parent.change_page("page3")

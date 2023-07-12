@@ -2,20 +2,11 @@
 # https://github.com/ParthJadhav/Tkinter-Designer
 
 
-import ipaddress
-from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Toplevel, StringVar
-from tkinter import messagebox
-import json
-import os
-import sys
-import threading
-import webbrowser
-import re
-import netifaces
+from tkinter import StringVar, IntVar, BooleanVar, Tk, Canvas
 
 from gui.pages.page1.gui import Page1
 from gui.pages.page2.gui import Page2
+from gui.pages.page3.gui import Page3
 
 
 class MainWindow(Tk):
@@ -28,6 +19,14 @@ class MainWindow(Tk):
 
         self.geometry("862x519")
         self.configure(bg="#003061")
+
+        self.data = {
+            "interface": StringVar(),
+            "subnet": StringVar(),
+            "nofakemachine": BooleanVar(),
+            "ip_addresses": StringVar(),
+            "num_services": StringVar(),
+        }
 
         self.current_window = None
 
@@ -47,6 +46,7 @@ class MainWindow(Tk):
         self.windows = {
             "page1": Page1(self),
             "page2": Page2(self),
+            "page3": Page3(self),
         }
 
         self.change_page("page1")
