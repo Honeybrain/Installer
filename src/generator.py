@@ -84,27 +84,27 @@ def generate(config_file_path, username, password):
         print("Copying files...")
 
         shutil.copytree(
-            "../../Honeypot/fail2ban", "./build/honeypot/fail2ban", dirs_exist_ok=True
+            "../../Honeypot/fail2ban", "../build/honeypot/fail2ban", dirs_exist_ok=True
         )
         shutil.copytree(
-            "../../Honeypot/logs", "./build/honeypot/logs", dirs_exist_ok=True
+            "../../Honeypot/logs", "../build/honeypot/logs", dirs_exist_ok=True
         )
         shutil.copytree(
-            "../../Honeypot/nginx", "./build/honeypot/nginx", dirs_exist_ok=True
+            "../../Honeypot/nginx", "../build/honeypot/nginx", dirs_exist_ok=True
         )
         shutil.copytree(
-            "../../Honeypot/shop", "./build/honeypot/shop", dirs_exist_ok=True
+            "../../Honeypot/shop", "../build/honeypot/shop", dirs_exist_ok=True
         )
         shutil.copytree(
-            "../../Honeypot/suricata", "./build/honeypot/suricata", dirs_exist_ok=True
+            "../../Honeypot/suricata", "../build/honeypot/suricata", dirs_exist_ok=True
         )
         shutil.copy(
             "../../Honeypot/fail2ban/config/fail2ban.env",
-            "./build/honeypot/fail2ban.env",
+            "../build/honeypot/fail2ban.env",
         )
 
         # Write the output to a file
-        with open("build/docker-compose.yml", "w") as f:
+        with open("../build/docker-compose.yml", "w") as f:
             f.write(output)
 
         print("[OK] Files copied.")
@@ -115,7 +115,7 @@ def generate(config_file_path, username, password):
     try:
         print("Starting honeypot services...")
         subprocess.run(
-            ["docker", "compose", "-f", "./build/docker-compose.yml", "up", "-d"],
+            ["docker", "compose", "-f", "../build/docker-compose.yml", "up", "-d"],
             cwd=".",
         )
     except Exception as e:
