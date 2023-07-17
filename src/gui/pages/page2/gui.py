@@ -244,7 +244,7 @@ class Page2(Frame):
         self.parent.data["subnet"].set(subnet)
 
         if not is_valid_interface(interface):
-            messagebox.showerror("Erreur.", "Cette interface réseau n'existe pas. Tapez ifconfig pour trouver le nom de votre interface réseau (du paquet npm net-tools).")
+            messagebox.showerror("Erreur.", "Cette interface réseau n'existe pas. Tapez ifconfig pour trouver le nom de votre interface réseau (du paquet apt net-tools).")
         elif not is_valid_cidr(subnet):
             messagebox.showerror("Erreur.", "Ceci n'est pas une adresse IP.")
         else:
