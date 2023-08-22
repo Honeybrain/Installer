@@ -100,6 +100,8 @@ services:
   envoy:
     image: adrienroco/hb_dashboard_envoy:latest
     container_name: envoy
+    ports:
+      - "8080:8080"
     networks:
       - dashboard_network
 
