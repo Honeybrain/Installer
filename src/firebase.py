@@ -1,20 +1,10 @@
-import requests
+import grpc
+from protos.user_pb2_grpc import UserStub
+from protos.user_pb2 import SignInSignUpRequest
 
 def create_account(username, password):
-    signup_url = 'http://localhost:8000/user/signup'
-    data = {
-        'password': password,
-        'email': username
-    }
-    headers = {
-        'Content-Type': 'application/json'
-    }
-
-    response = requests.post(signup_url, json=data, headers=headers)
-
-    if response.status_code == 200:
-        print('User created successfully')
-        print(response.json())
-    else:
-        print(f'Error creating user: {response.text}')
-        raise Exception(f"Could not create user.")
+    with grpc.insecure_channel('localhost:8080') as channel:
+        stub = UserStub(channel)
+        request = SignInSignUpRequest(email=username, password=password)
+        response = stub.SignUp(request)
+        print(response.message)
