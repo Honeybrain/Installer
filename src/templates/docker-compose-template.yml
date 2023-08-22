@@ -68,8 +68,6 @@ services:
   backend:
     image: adrienroco/hb_dashboard_back:latest
     container_name: backend
-    ports:
-      - "8000:8000"
     environment:
       - NODE_ENV=production
     networks:
@@ -79,7 +77,7 @@ services:
       - "./honeypot/nginx/config/block.conf:/app/honeypot/block.conf"
       - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:8000/"]
+      test: ["CMD", "curl", "--fail", "http://localhost:50051/"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -93,13 +91,17 @@ services:
       - "3000:3000"
     networks:
       - dashboard_network
-    # volumes:
-    #   - ../Frontend/:/app
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:3000/"]
       interval: 10s
       timeout: 5s
       retries: 3
+
+  envoy:
+    image: adrienroco/hb_dashboard_envoy:latest
+    container_name: envoy
+    networks:
+      - dashboard_network
 
 networks:
   honeypot_network:
