@@ -47,7 +47,7 @@ def generate(config_file_path, username, password):
         )
         ftp_port = config["ftp"]["port"] if "ftp" in config else None
         ftp_ip_address = config["ftp"]["ip_address"] if "ftp" in config else None
-        interface = config["interface"]
+        interface = "null"
         subnet = config["subnet"]
         dockerfile = config["dockerfile"]
 
@@ -70,10 +70,13 @@ def generate(config_file_path, username, password):
             ip_addresses_dummy_pc=ip_addresses_dummy_pc,
             ftp_port=ftp_port,
             ftp_ip_address=ftp_ip_address,
-            interface=interface,
             subnet=subnet,
             dockerfile=dockerfile,
         )
+
+        template_ips = env.get_template("docker-compose-ips-template.yml")
+
+        output_ips = template_ips.render()
 
         print("[OK] Docker compose generated.")
     except Exception as e:
@@ -84,28 +87,26 @@ def generate(config_file_path, username, password):
         print("Copying files...")
 
         shutil.copytree(
-            "../../Honeypot/fail2ban", "../build/honeypot/fail2ban", dirs_exist_ok=True
+            "../../Honeypot/config", "../build/honeypot/config", dirs_exist_ok=True
         )
         shutil.copytree(
             "../../Honeypot/logs", "../build/honeypot/logs", dirs_exist_ok=True
         )
-        shutil.copytree(
-            "../../Honeypot/nginx", "../build/honeypot/nginx", dirs_exist_ok=True
-        )
-        shutil.copytree(
-            "../../Honeypot/shop", "../build/honeypot/shop", dirs_exist_ok=True
-        )
-        shutil.copytree(
-            "../../Honeypot/suricata", "../build/honeypot/suricata", dirs_exist_ok=True
+        shutil.copy(
+            "../../Honeypot/scripts/start_honeybrain.sh", "../build/start_honeybrain.sh",
         )
         shutil.copy(
-            "../../Honeypot/fail2ban/config/fail2ban.env",
+            "../../Honeypot/config/fail2ban/fail2ban.env",
             "../build/honeypot/fail2ban.env",
         )
 
         # Write the output to a file
         with open("../build/docker-compose.yml", "w") as f:
             f.write(output)
+
+        # Write the output to a file
+        with open("../build/docker-compose-ips.yml", "w") as f:
+            f.write(output_ips)
 
         print("[OK] Files copied.")
     except Exception as e:
@@ -114,8 +115,9 @@ def generate(config_file_path, username, password):
 
     try:
         print("Starting honeypot services...")
+        subprocess.run(["chmod", "+x", "../build/start_honeybrain.sh"])
         subprocess.run(
-            ["docker", "compose", "-f", "../build/docker-compose.yml", "up", "-d"],
+            ["../build/start_honeybrain.sh", "../build/docker-compose.yml", "../build/docker-compose-ips.yml"],
             cwd=".",
         )
     except Exception as e:

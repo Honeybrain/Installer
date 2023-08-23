@@ -179,7 +179,7 @@ class Page2(Frame):
             file=relative_to_assets("entry_1.png"))
         self.entry_bg_1 = self.canvas.create_image(
             646.5,
-            311.5,
+            271.5,
             image=self.entry_image_1
         )
         self.page2_entry_1 = Entry(
@@ -192,60 +192,27 @@ class Page2(Frame):
         self.page2_entry_1.insert('1', '192.168.1.0/24')
         self.page2_entry_1.place(
             x=486.0,
-            y=281.0,
+            y=241.0,
             width=321.0,
             height=59.0
         )
 
         self.canvas.create_text(
             475.0,
-            253.0,
+            213.0,
             anchor="nw",
             text="Sous réseau de votre réseau Honeypot :",
             fill="#FFFFFF",
             font=("Roboto Bold", 16 * -1)
         )
 
-        self.entry_image_2 = PhotoImage(
-            file=relative_to_assets("entry_1.png"))
-        self.entry_bg_2 = self.canvas.create_image(
-            646.5,
-            189.5,
-            image=self.entry_image_2
-        )
-        self.page2_entry_2 = Entry(
-            self,
-            bd=0,
-            bg="#F1F5FF",
-            fg="#000716",
-            highlightthickness=0
-        )
-        self.page2_entry_2.insert('1', 'eth0')
-        self.page2_entry_2.place(
-            x=486.0,
-            y=159.0,
-            width=321.0,
-            height=59.0
-        )
-
-        self.canvas.create_text(
-            475.0,
-            133.0,
-            anchor="nw",
-            text="Interface réseau à espionner :",
-            fill="#FFFFFF",
-            font=("Roboto Bold", 16 * -1)
-        )
-
     def next_page(self):
-        interface = self.page2_entry_2.get()
+        interface = "null"
         subnet = self.page2_entry_1.get()
         self.parent.data["interface"].set(interface)
         self.parent.data["subnet"].set(subnet)
 
-        if not is_valid_interface(interface):
-            messagebox.showerror("Erreur.", "Cette interface réseau n'existe pas. Tapez ifconfig pour trouver le nom de votre interface réseau (du paquet apt net-tools).")
-        elif not is_valid_cidr(subnet):
+        if not is_valid_cidr(subnet):
             messagebox.showerror("Erreur.", "Ceci n'est pas une adresse IP.")
         else:
             self.parent.change_page("page3")
