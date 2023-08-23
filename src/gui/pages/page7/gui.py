@@ -121,7 +121,7 @@ class Page7(Frame):
     def install(self):
         # Définir les options de configuration
 
-        print("Creating config...")
+        print("[INFO] Creating config...")
 
         dockerfile = self.remove_dockerfile_from_path(
             self.parent.data["dockerfile"].get()
@@ -159,9 +159,9 @@ class Page7(Frame):
         with open(config_file_path, "w") as f:
             json.dump(config, f, indent=4)
 
-        print("[OK] Config created.")
+        print("[ OK ] Config created.")
 
-        print("Launching Honeypot generator...")
+        print("[INFO] Launching Honeypot generator...")
 
         # Generer les docker compose en utilisant la configuration
         generate(

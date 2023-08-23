@@ -1,3 +1,4 @@
+import os
 from jinja2 import Environment, FileSystemLoader
 import json
 import shutil
@@ -33,7 +34,7 @@ def wait_for_container_health(container_name, timeout=3600):
 
 def generate(config_file_path, username, password):
     try:
-        print("Parsing config...")
+        print("[INFO] Parsing config...")
         # Open the config file
         with open(config_file_path, "r") as f:
             config = json.load(f)
@@ -47,20 +48,19 @@ def generate(config_file_path, username, password):
         )
         ftp_port = config["ftp"]["port"] if "ftp" in config else None
         ftp_ip_address = config["ftp"]["ip_address"] if "ftp" in config else None
-        interface = "null"
         subnet = config["subnet"]
         dockerfile = config["dockerfile"]
 
         # Load the template file
         file_loader = FileSystemLoader("templates")
         env = Environment(loader=file_loader)
-        print("[OK] Config parsed.")
+        print("[ OK ] Config parsed.")
     except Exception as e:
         print("[ERROR] Could not parse config: " + e.__cause__)
         return
 
     try:
-        print("Generating docker compose...")
+        print("[INFO] Generating docker compose...")
         # Load the main template
         template = env.get_template("docker-compose-template.yml")
 
@@ -78,14 +78,23 @@ def generate(config_file_path, username, password):
 
         output_ips = template_ips.render()
 
-        print("[OK] Docker compose generated.")
+        print("[ OK ] Docker compose generated.")
     except Exception as e:
         print("[ERROR] Could not generate docker compose: " + e.__cause__)
         return
 
     try:
-        print("Copying files...")
+        print("[INFO] Checking Honeypot...")
+        honeypot_path = "../../Honeypot"
 
+        if not os.path.exists(honeypot_path):
+            print("[WARN] Honeypot folder does not exist!")
+            print("[INFO] Cloning Honeypot...")
+            subprocess.run(["git", "clone", "https://github.com/Honeybrain/Honeypot", honeypot_path])
+            print("[ OK ] Honeypot cloned.")
+        print("[ OK ] Honeypot exists.")
+
+        print("[INFO] Copying files...")
         shutil.copytree(
             "../../Honeypot/config", "../build/honeypot/config", dirs_exist_ok=True
         )
@@ -108,13 +117,13 @@ def generate(config_file_path, username, password):
         with open("../build/docker-compose-ips.yml", "w") as f:
             f.write(output_ips)
 
-        print("[OK] Files copied.")
+        print("[ OK ] Files copied.")
     except Exception as e:
         print("[ERROR] Could not copy honeybrain files: " + e.__cause__)
         return
 
     try:
-        print("Starting honeypot services...")
+        print("[INFO] Starting honeypot services...")
         subprocess.run(["chmod", "+x", "../build/start_honeybrain.sh"])
         subprocess.run(
             ["../build/start_honeybrain.sh", "../build/docker-compose.yml", "../build/docker-compose-ips.yml"],
@@ -126,15 +135,15 @@ def generate(config_file_path, username, password):
 
     try:
         wait_for_container_health("backend")
-        print("[OK] Docker services started.")
+        print("[ OK ] Docker services started.")
     except TimeoutError:
         print("[ERROR] Could not start backend.")
         return
 
     try:
-        print("Creating account...")
+        print("[INFO] Creating account...")
         create_account(username, password)
-        print("[OK] Account created.")
+        print("[ OK ] Account created.")
     except Exception as e:
         print("[ERROR] Could not create user: " + e.__cause__)
         return

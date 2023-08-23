@@ -7,4 +7,3 @@ def create_account(username, password):
         stub = UserStub(channel)
         request = SignInSignUpRequest(email=username, password=password)
         response = stub.SignUp(request)
-        print(response.message)
