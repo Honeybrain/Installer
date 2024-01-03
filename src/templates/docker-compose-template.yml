@@ -29,6 +29,12 @@ services:
   {% include 'ftp_server_template.yml' %}
 {% endif %}
 
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    networks:
+      - dashboard_network
+
   backend:
     image: adrienroco/hb_dashboard_back:latest
     container_name: backend
