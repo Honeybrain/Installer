@@ -12,6 +12,9 @@ from gui.pages.page5.gui import Page5
 from gui.pages.page6.gui import Page6
 from gui.pages.page7.gui import Page7
 from gui.pages.page8.gui import Page8
+from gui.pages.page9.gui import Page9
+from gui.pages.page10.gui import Page10
+
 
 
 class MainWindow(Tk):
@@ -37,6 +40,11 @@ class MainWindow(Tk):
             "mail": StringVar(),
             "password": StringVar(),
             "dockerfile": StringVar(),
+            "noftp": BooleanVar(),
+            "fakedb": BooleanVar(),
+            "db_ip_address": StringVar(),
+            "db_port": StringVar(),
+            "vpn": BooleanVar(),
         }
 
         self.current_window = None
@@ -63,6 +71,8 @@ class MainWindow(Tk):
             "page6": Page6(self),
             "page7": Page7(self),
             "page8": Page8(self),
+            "page9": Page9(self),
+            "page10": Page10(self),
         }
 
         self.change_page("page1")

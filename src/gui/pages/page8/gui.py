@@ -1,6 +1,5 @@
 from pathlib import Path
 from tkinter import Frame, Canvas, Button, PhotoImage, Entry, messagebox
-import webbrowser
 
 from utils import is_dockerfile_path, is_valid_email, is_valid_ip_list, is_valid_port
 
@@ -25,66 +24,94 @@ class Page8(Frame):
 
         self.canvas = Canvas(
             self,
-            bg="#003061",
-            height=519,
-            width=862,
-            bd=0,
-            highlightthickness=0,
-            relief="ridge",
+            bg = "#003061",
+            height = 519,
+            width = 862,
+            bd = 0,
+            highlightthickness = 0,
+            relief = "ridge"
         )
 
-        self.canvas.place(x=0, y=0)
-        self.canvas.create_rectangle(
-            431.0, 0.0, 862.0, 519.0, fill="#FCFCFC", outline=""
-        )
-
-        self.image_image_1 = PhotoImage(file=relative_to_assets("image_1.png"))
-        self.image_1 = self.canvas.create_image(646.0, 199.0, image=self.image_image_1)
-
-        self.button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
+        self.canvas.place(x = 0, y = 0)
+        self.button_image_1 = PhotoImage(
+            file=relative_to_assets("button_1.png"))
         self.button_1 = Button(
             self,
             image=self.button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: exit(),
-            relief="flat",
+            command=lambda: self.next_page(),
+            relief="flat"
         )
-        self.button_1.place(x=557.0, y=340.0, width=180.0, height=55.0)
+        self.button_1.place(
+            x=557.0,
+            y=401.0,
+            width=180.0,
+            height=55.0
+        )
 
-        self.button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
-        self.button_2 = Button(
+        self.canvas.create_text(
+            252.0,
+            61.00000000000001,
+            anchor="nw",
+            text="une dernière étape !",
+            fill="#FCFCFC",
+            font=("Roboto Bold", 40 * -1)
+        )
+
+        self.entry_image_1 = PhotoImage(
+            file=relative_to_assets("entry_1.png"))
+        self.entry_bg_1 = self.canvas.create_image(
+            431.0,
+            274.5,
+            image=self.entry_image_1
+        )
+        self.page8_entry_1 = Entry(
             self,
-            image=self.button_image_2,
-            borderwidth=0,
-            highlightthickness=0,
-            command=lambda: self.open_dashboard(),
-            relief="flat",
+            bd=0,
+            bg="#F1F5FF",
+            fg="#000716",
+            highlightthickness=0
         )
-        self.button_2.place(x=557.0, y=408.0, width=180.0, height=55.0)
-
-        self.canvas.create_text(
-            93.0,
-            209.0,
-            anchor="nw",
-            text="Configuration ",
-            fill="#FCFCFC",
-            font=("Roboto Bold", 40 * -1),
+        self.page8_entry_1.place(
+            x=178.0,
+            y=244.0,
+            width=506.0,
+            height=59.0
         )
 
         self.canvas.create_text(
-            130.0,
-            256.0,
+            349.0,
+            214.0,
             anchor="nw",
-            text="terminée!",
+            text="Chemin du Dockerfile :",
+            fill="#FFFFFF",
+            font=("Roboto Bold", 16 * -1)
+        )
+
+        self.canvas.create_text(
+            144.0,
+            113.0,
+            anchor="nw",
+            text="Renseignez le chemin de l’image Docker (Dockerfile) de votre",
             fill="#FCFCFC",
-            font=("Roboto Bold", 40 * -1),
+            font=("RobotoRoman Regular", 20 * -1)
         )
 
-        self.canvas.create_rectangle(
-            186.0, 312.0, 246.0, 317.0, fill="#FCFCFC", outline=""
+        self.canvas.create_text(
+            134.0,
+            141.0,
+            anchor="nw",
+            text="site prêt au déploiement en production pour l’intégrer au Honeypot.",
+            fill="#FCFCFC",
+            font=("RobotoRoman Regular", 20 * -1)
         )
 
-    def open_dashboard(self):
-        url = "http://localhost:3000"
-        webbrowser.open(url)
+    def next_page(self):
+        dockerfile = self.page8_entry_1.get()
+        self.parent.data["dockerfile"].set(dockerfile)
+
+        if not is_dockerfile_path(dockerfile):
+            messagebox.showerror("Erreur.", "Chemin du Dockerfile invalide.")
+        else:
+            self.parent.change_page("page9")

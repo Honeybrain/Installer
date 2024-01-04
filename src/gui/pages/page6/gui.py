@@ -1,7 +1,7 @@
 from pathlib import Path
 from tkinter import Frame, Canvas, Button, PhotoImage, Entry, messagebox
 
-from utils import is_dockerfile_path, is_valid_email, is_valid_ip_list, is_valid_port
+from utils import is_valid_cidr, is_valid_interface
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
@@ -35,83 +35,150 @@ class Page6(Frame):
         self.canvas.place(x = 0, y = 0)
         self.button_image_1 = PhotoImage(
             file=relative_to_assets("button_1.png"))
-        self.button_1 = Button(
+        button_1 = Button(
             self,
             image=self.button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: self.next_page(),
+            command=lambda: self.activate(),
             relief="flat"
         )
-        self.button_1.place(
+        button_1.place(
             x=557.0,
-            y=401.0,
+            y=300.0,
+            width=180.0,
+            height=55.0
+        )
+
+        self.button_image_2 = PhotoImage(
+            file=relative_to_assets("button_2.png"))
+        button_2 = Button(
+            self,
+            image=self.button_image_2,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.desactivate(),
+            relief="flat"
+        )
+        button_2.place(
+            x=557.0,
+            y=380.0,
             width=180.0,
             height=55.0
         )
 
         self.canvas.create_text(
-            252.0,
-            61.00000000000001,
+            40.0,
+            43.00000000000001,
             anchor="nw",
-            text="une dernière étape !",
+            text="Application mobile Honeybrain :",
             fill="#FCFCFC",
-            font=("Roboto Bold", 40 * -1)
+            font=("Roboto Bold", 24 * -1)
         )
 
-        self.entry_image_1 = PhotoImage(
-            file=relative_to_assets("entry_1.png"))
-        self.entry_bg_1 = self.canvas.create_image(
-            431.0,
-            274.5,
-            image=self.entry_image_1
-        )
-        self.page6_entry_1 = Entry(
-            self,
-            bd=0,
-            bg="#F1F5FF",
-            fg="#000716",
-            highlightthickness=0
-        )
-        self.page6_entry_1.place(
-            x=178.0,
-            y=244.0,
-            width=506.0,
-            height=59.0
+        self.canvas.create_rectangle(
+            40.0,
+            77.0,
+            100.0,
+            82.0,
+            fill="#FCFCFC",
+            outline="")
+
+        self.canvas.create_text(
+            40.0,
+            350.0,
+            anchor="nw",
+            text="Si vous souhaiter utiliser l’application",
+            fill="#FCFCFC",
+            font=("RobotoRoman Regular", 20 * -1)
         )
 
         self.canvas.create_text(
-            349.0,
+            40.0,
+            379.0,
+            anchor="nw",
+            text="mobile Honeybrain, vous devez activer",
+            fill="#FCFCFC",
+            font=("RobotoRoman Regular", 20 * -1)
+        )
+
+        self.canvas.create_text(
+            40.0,
+            408.0,
+            anchor="nw",
+            text="le VPN Wireguard.",
+            fill="#FCFCFC",
+            font=("RobotoRoman Regular", 20 * -1)
+        )
+
+        self.canvas.create_text(
+            40.0,
+            98.0,
+            anchor="nw",
+            text="Honeybrain possède une application ",
+            fill="#FCFCFC",
+            font=("RobotoRoman Regular", 20 * -1)
+        )
+
+        self.canvas.create_text(
+            40.0,
+            127.0,
+            anchor="nw",
+            text="mobile qui permet de visualiser les",
+            fill="#FCFCFC",
+            font=("RobotoRoman Regular", 20 * -1)
+        )
+
+        self.canvas.create_text(
+            40.0,
+            156.0,
+            anchor="nw",
+            text="activités de votre Honeypot, grâce à son",
+            fill="#FCFCFC",
+            font=("RobotoRoman Regular", 20 * -1)
+        )
+
+        self.canvas.create_text(
+            40.0,
+            185.0,
+            anchor="nw",
+            text="interface simple et intuitive.",
+            fill="#FCFCFC",
+            font=("RobotoRoman Regular", 20 * -1)
+        )
+
+        self.canvas.create_text(
+            40.0,
             214.0,
             anchor="nw",
-            text="Chemin du Dockerfile :",
-            fill="#FFFFFF",
-            font=("Roboto Bold", 16 * -1)
-        )
-
-        self.canvas.create_text(
-            144.0,
-            113.0,
-            anchor="nw",
-            text="Renseignez le chemin de l’image Docker (Dockerfile) de votre",
+            text="L’application mobile Honeybrain permet",
             fill="#FCFCFC",
             font=("RobotoRoman Regular", 20 * -1)
         )
 
         self.canvas.create_text(
-            134.0,
-            141.0,
+            40.0,
+            243.0,
             anchor="nw",
-            text="site prêt au déploiement en production pour l’intégrer au Honeypot.",
+            text="de surveiller les attaques en temps réel.",
             fill="#FCFCFC",
             font=("RobotoRoman Regular", 20 * -1)
         )
 
-    def next_page(self):
-        dockerfile = self.page6_entry_1.get()
-        self.parent.data["dockerfile"].set(dockerfile)
+        self.canvas.create_text(
+            40.0,
+            272.0,
+            anchor="nw",
+            text="Elle est disponible sur iOS et Android.",
+            fill="#FCFCFC",
+            font=("RobotoRoman Regular", 20 * -1)
+        )
 
-        if not is_dockerfile_path(dockerfile):
-            messagebox.showerror("Erreur.", "Chemin du Dockerfile invalide.")
-        else:
-            self.parent.change_page("page7")
+
+    def desactivate(self):
+        self.parent.data["vpn"].set(False)
+        self.parent.change_page("page7")
+
+    def activate(self):
+        self.parent.data["vpn"].set(True)
+        self.parent.change_page("page7")
