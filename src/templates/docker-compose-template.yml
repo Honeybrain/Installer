@@ -29,22 +29,40 @@ services:
   {% include 'ftp_server_template.yml' %}
 {% endif %}
 
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    networks:
+      - dashboard_network
+
   backend:
     image: adrienroco/hb_dashboard_back:latest
     container_name: backend
     environment:
       - NODE_ENV=production
+      - GRPC_URL=backend:50051
+      - SMTP_HOST=smtp.zoho.eu
+      - SMTP_PORT=465
+      - SMTP_FROM=contact@honeybrain.fr
+      - SMTP_USER=contact@honeybrain.fr
+      - SMTP_PASSWORD=H!2HQwusWch-:xc
     networks:
       - dashboard_network
     volumes:
+      - "./honeypot/config/wireguard/peer1/peer1.png:/app/honeypot/peer1.png"
       - "./honeypot/logs/suricata/fast.log:/app/honeypot/fast.log"
       - "./honeypot/config/nginx/block.conf:/app/honeypot/block.conf"
+      - "./honeypot/config/suricata/suricata.rules:/app/honeypot/suricata.rules"
+      - "./honeypot/config/fail2ban/filter.d/nginx-honeypot.conf:/app/honeypot/nginx-honeypot.conf"
+      - "./honeypot/config/fail2ban/action.d/geohostsdeny.conf:/app/honeypot/geohostsdeny.conf"
       - "/var/run/docker.sock:/var/run/docker.sock"
     healthcheck:
       test: ["CMD", "nc", "-zv", "localhost", "50051"]
       interval: 10s
       timeout: 5s
       retries: 3
+    depends_on:
+      - mongo
 
   frontend:
     image: adrienroco/hb_dashboard_front:latest
@@ -68,6 +86,29 @@ services:
       - "8080:8080"
     networks:
       - dashboard_network
+    depends_on:
+      - backend
+
+  wireguard:
+    image: linuxserver/wireguard
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+      - SERVERURL=176.166.54.11
+      - SERVERPORT=51820
+      - PEERS=1
+    ports:
+      - "51820:51820/udp"
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    networks:
+      - dashboard_network
+    restart: unless-stopped
 
 networks:
   honeypot_network:
