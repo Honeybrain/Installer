@@ -161,7 +161,6 @@ cython_debug/
 #.idea/
 
 .vscode
-src/protos
 
 # Mac
 .DS_Store
